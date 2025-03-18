@@ -15,8 +15,10 @@ package co.edu.uniandes.csw.mueblesdelosalpes.logica.ejb;
 import co.edu.uniandes.csw.mueblesdelosalpes.persistencia.mock.ServicioPersistenciaMock;
 import co.edu.uniandes.csw.mueblesdelosalpes.dto.Usuario;
 import co.edu.uniandes.csw.mueblesdelosalpes.excepciones.AutenticacionException;
+import co.edu.uniandes.csw.mueblesdelosalpes.excepciones.OperacionInvalidaException;
 import co.edu.uniandes.csw.mueblesdelosalpes.logica.interfaces.IServicioSeguridadMockLocal;
 import co.edu.uniandes.csw.mueblesdelosalpes.logica.interfaces.IServicioPersistenciaMockLocal;
+import java.util.List;
 
 
 /**
@@ -77,6 +79,53 @@ public class ServicioSeguridadMock implements IServicioSeguridadMockLocal
         else
         {
             throw new AutenticacionException("El nombre de usuario proporcionado no pertenece a ninguna cuenta.");
+        }
+    }
+
+    // Métodos CRUD extendidos para usuarios
+
+    /**
+     * Crea un nuevo usuario en el sistema.
+     */
+    @Override
+    public Usuario createUsuario(Usuario u) throws OperacionInvalidaException {
+        persistencia.create(u);
+        return u;
+    }
+
+    /**
+     * Retorna la lista de todos los usuarios registrados.
+     */
+    @Override
+    public List<Usuario> getAllUsuarios() {
+        return (List<Usuario>) persistencia.findAll(Usuario.class);
+    }
+
+    /**
+     * Retorna un usuario en específico, dado su login.
+     */
+    @Override
+    public Usuario getUsuario(String login) {
+        return (Usuario) persistencia.findById(Usuario.class, login);
+    }
+
+    /**
+     * Actualiza la información de un usuario.
+     */
+    @Override
+    public Usuario updateUsuario(Usuario u) {
+        persistencia.update(u);
+        return u;
+    }
+
+    /**
+     * Elimina un usuario del sistema (por su login). Se validan restricciones, por ejemplo, si tiene compras asociadas.
+     */
+    @Override
+    public void deleteUsuario(String login) throws OperacionInvalidaException {
+        Usuario u = getUsuario(login);
+        if (u != null) {
+            persistencia.delete(u);
         }
     }
 }

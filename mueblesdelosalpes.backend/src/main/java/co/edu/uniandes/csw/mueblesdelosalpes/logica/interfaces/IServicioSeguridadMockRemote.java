@@ -14,6 +14,8 @@ package co.edu.uniandes.csw.mueblesdelosalpes.logica.interfaces;
 
 import co.edu.uniandes.csw.mueblesdelosalpes.dto.Usuario;
 import co.edu.uniandes.csw.mueblesdelosalpes.excepciones.AutenticacionException;
+import co.edu.uniandes.csw.mueblesdelosalpes.excepciones.OperacionInvalidaException;
+import java.util.List;
 
 
 /**
@@ -30,6 +32,14 @@ public interface IServicioSeguridadMockRemote
      * @return usuario Retorna el objeto que contiene la información del usuario que ingreso al sistema.
      */
     public Usuario ingresar(String nombre, String contraseña)throws AutenticacionException;
+    
+     public Usuario createUsuario(Usuario u) throws OperacionInvalidaException;
+     
+      public List<Usuario> getAllUsuarios();
+      
+       public Usuario getUsuario(String login);
+       
+       public void deleteUsuario(String login) throws OperacionInvalidaException;
 
     
 }
